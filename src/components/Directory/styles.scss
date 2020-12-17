@@ -1,0 +1,44 @@
+.directory {
+  height: 100%;
+  .wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    .item {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 50%;
+      height: 100%;
+      // float: left;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      &::after {
+        position: absolute;
+        content: '';
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1;
+      }
+      a {
+        position: relative;
+        padding: 10px;
+        z-index: 2;
+        background: #ffffff;
+        color: #000000;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+        font-size: 2rem;
+        font-weight: 400;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
