@@ -12,7 +12,9 @@
 /build
 
 # Optional eslint cache
-/.eslintcache
+.eslintcache*
+#All Hidden Folders
+.*/
 
 # misc
 .DS_Store
@@ -20,6 +22,9 @@
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Keys and auth...
+.config.js*
 
 npm-debug.log*
 yarn-debug.log*
