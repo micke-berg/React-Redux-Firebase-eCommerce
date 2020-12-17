@@ -1,6 +1,6 @@
 .header {
   height: 6.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   .wrapper {
     position: relative;
     display: flex;
@@ -15,7 +15,33 @@
       left: 10px;
       top: 50%;
       transform: translateY(-50%);
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
       font-weight: 700;
     }
+  }
+  .callToActions {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      list-style: none;
+      a {
+        font-size: 1.8rem;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+    }
+  }
+  a {
+    color: #000;
   }
 }
