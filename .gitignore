@@ -12,8 +12,9 @@
 /build
 
 # Optional eslint cache
-/.eslintcache
+/.eslintcache*
 
+.config*
 # misc
 .DS_Store
 .env.local
