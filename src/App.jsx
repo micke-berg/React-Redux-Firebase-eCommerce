@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { auth } from './firebase/utils';
 import './default.scss';
 
 // Layouts
@@ -11,6 +12,19 @@ import Registration from './pages/Registration/Registration';
 import LoginPage from './pages/LoginPage/LoginPage';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+  let authListener = null;
+
+  useEffect(() => {
+    authListener = auth.onAuthStateChanged((userAuth) => {
+      if (!userAuth) {
+        setCurrentUser(null);
+      }
+      setCurrentUser(userAuth);
+      authListener();
+    });
+  }, []);
+
   return (
     <div className="App">
       <Switch>
@@ -18,7 +32,7 @@ function App() {
           exact
           path="/"
           render={() => (
-            <HomepageLayout>
+            <HomepageLayout currentUser={currentUser}>
               <HomePage />
             </HomepageLayout>
           )}
@@ -26,7 +40,7 @@ function App() {
         <Route
           path="/registration"
           render={() => (
-            <MainLayout>
+            <MainLayout currentUser={currentUser}>
               <Registration />
             </MainLayout>
           )}
@@ -34,7 +48,7 @@ function App() {
         <Route
           path="/login"
           render={() => (
-            <MainLayout>
+            <MainLayout currentUser={currentUser}>
               <LoginPage />
             </MainLayout>
           )}
