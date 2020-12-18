@@ -13,11 +13,13 @@
 
 # Optional eslint cache
 
+
 .eslintcache*
 #All Hidden Folders
 .*/
 
 .config*
+
 # misc
 .DS_Store
 .env.local
