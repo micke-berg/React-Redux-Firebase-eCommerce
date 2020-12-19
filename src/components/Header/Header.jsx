@@ -9,9 +9,13 @@ function Header({ currentUser }) {
   return (
     <header className="header">
       <div className="wrapper">
+        <div className="men-women">
+          <a href="/">Womens</a>
+          <a href="/">Mens</a>
+        </div>
         <div className="logo">
           <Link to="/">
-            <h2>LOGO</h2>
+            <h2>OZ|ZO</h2>
           </Link>
         </div>
         <div className="callToActions">
