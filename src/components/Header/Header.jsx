@@ -5,9 +5,7 @@ import './styles.scss';
 import { Link } from 'react-router-dom';
 import { auth } from '../../firebase/utils';
 
-function Header(props) {
-  const { currentUser } = props;
-  console.log(currentUser);
+function Header({ currentUser }) {
   return (
     <header className="header">
       <div className="wrapper">
@@ -20,7 +18,9 @@ function Header(props) {
           {currentUser && (
             <ul>
               <li>
-                <span onClick={() => auth.signOut()}>Log out</span>
+                <span type="button" onClick={() => auth.signOut()}>
+                  Log out
+                </span>
               </li>
             </ul>
           )}
