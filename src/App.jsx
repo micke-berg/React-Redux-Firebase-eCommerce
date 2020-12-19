@@ -45,11 +45,11 @@ function App() {
         />
         <Route
           path="/registration"
-          render={() => (
+          render={() => (currentUser ? <Redirect to="/" /> : (
             <MainLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
               <Registration />
             </MainLayout>
-          )}
+          ))}
         />
         <Route
           path="/login"
