@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { auth } from './firebase/utils';
+import { Switch, Route, Redirect } from 'react-router-dom';
+// import { auth } from './firebase/utils';
+import { auth, handleUserProfile } from './firebase/utils';
 import './default.scss';
 
 // Layouts
@@ -13,15 +14,20 @@ import LoginPage from './pages/LoginPage/LoginPage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-  let authListener = null;
 
   useEffect(() => {
-    authListener = auth.onAuthStateChanged((userAuth) => {
-      if (!userAuth) {
-        setCurrentUser(null);
+    auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await handleUserProfile(userAuth);
+        userRef.onSnapshot((snapshot) => {
+          setCurrentUser({
+            id: snapshot.id,
+            ...snapshot.data(),
+          });
+        });
       }
-      setCurrentUser(userAuth);
-      authListener();
+
+      setCurrentUser(null);
     });
   }, []);
 
@@ -32,7 +38,7 @@ function App() {
           exact
           path="/"
           render={() => (
-            <HomepageLayout currentUser={currentUser}>
+            <HomepageLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
               <HomePage />
             </HomepageLayout>
           )}
@@ -40,18 +46,18 @@ function App() {
         <Route
           path="/registration"
           render={() => (
-            <MainLayout currentUser={currentUser}>
+            <MainLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
               <Registration />
             </MainLayout>
           )}
         />
         <Route
           path="/login"
-          render={() => (
-            <MainLayout currentUser={currentUser}>
+          render={() => (currentUser ? <Redirect to="/" /> : (
+            <MainLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
               <LoginPage />
             </MainLayout>
-          )}
+          ))}
         />
       </Switch>
     </div>
