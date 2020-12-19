@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import './styles.scss';
 import { Link } from 'react-router-dom';
+import { auth } from '../../firebase/utils';
 
-function Header() {
+function Header({ currentUser }) {
   return (
     <header className="header">
       <div className="wrapper">
@@ -12,14 +15,25 @@ function Header() {
           </Link>
         </div>
         <div className="callToActions">
-          <ul>
-            <li>
-              <Link to="/registration">Register</Link>
-            </li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          </ul>
+          {currentUser && (
+            <ul>
+              <li>
+                <span type="button" onClick={() => auth.signOut()}>
+                  Log out
+                </span>
+              </li>
+            </ul>
+          )}
+          {!currentUser && (
+            <ul>
+              <li>
+                <Link to="/registration">Register</Link>
+              </li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+            </ul>
+          )}
         </div>
       </div>
     </header>
