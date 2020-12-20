@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
