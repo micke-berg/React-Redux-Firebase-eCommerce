@@ -10,8 +10,14 @@ function Header({ currentUser }) {
     <header className="header">
       <div className="wrapper">
         <div className="men-women">
-          <a href="/">Womens</a>
-          <a href="/">Mens</a>
+          <ul>
+            <li>
+              <a href="/">Womens</a>
+            </li>
+            <li>
+              <a href="/">Mens</a>
+            </li>
+          </ul>
         </div>
         <div className="logo">
           <Link to="/">
