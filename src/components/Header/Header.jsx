@@ -9,9 +9,19 @@ function Header({ currentUser }) {
   return (
     <header className="header">
       <div className="wrapper">
+        <div className="men-women">
+          <ul>
+            <li>
+              <a href="/">Women</a>
+            </li>
+            <li>
+              <a href="/">Men</a>
+            </li>
+          </ul>
+        </div>
         <div className="logo">
           <Link to="/">
-            <h2>LOGO</h2>
+            <h2>OZ|ZO</h2>
           </Link>
         </div>
         <div className="callToActions">
@@ -27,10 +37,11 @@ function Header({ currentUser }) {
           {!currentUser && (
             <ul>
               <li>
-                <Link to="/registration">Register</Link>
+                <Link to="/registration">Join</Link>
               </li>
+              /
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login">Sign In</Link>
               </li>
             </ul>
           )}
