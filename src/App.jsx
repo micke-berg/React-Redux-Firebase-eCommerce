@@ -11,6 +11,7 @@ import HomepageLayout from './layouts/HomePageLayout';
 import HomePage from './pages/Homepage/HomePage';
 import Registration from './pages/Registration/Registration';
 import LoginPage from './pages/LoginPage/LoginPage';
+import Recovery from './pages/Recovery/Recovery';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -45,11 +46,11 @@ function App() {
         />
         <Route
           path="/registration"
-          render={() => (
+          render={() => (currentUser ? <Redirect to="/" /> : (
             <MainLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
               <Registration />
             </MainLayout>
-          )}
+          ))}
         />
         <Route
           path="/login"
@@ -58,6 +59,14 @@ function App() {
               <LoginPage />
             </MainLayout>
           ))}
+        />
+        <Route
+          path="/recovery"
+          render={() => (
+            <MainLayout currentUser={currentUser} setCurrentUser={setCurrentUser}>
+              <Recovery />
+            </MainLayout>
+          )}
         />
       </Switch>
     </div>
