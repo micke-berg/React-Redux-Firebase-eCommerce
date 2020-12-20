@@ -12,10 +12,10 @@ function Header({ currentUser }) {
         <div className="men-women">
           <ul>
             <li>
-              <a href="/">Womens</a>
+              <a href="/">Women</a>
             </li>
             <li>
-              <a href="/">Mens</a>
+              <a href="/">Men</a>
             </li>
           </ul>
         </div>
@@ -37,10 +37,11 @@ function Header({ currentUser }) {
           {!currentUser && (
             <ul>
               <li>
-                <Link to="/registration">Register</Link>
+                <Link to="/registration">Join</Link>
               </li>
+              /
               <li>
-                <Link to="/login">Login</Link>
+                <Link to="/login">Sign In</Link>
               </li>
             </ul>
           )}
