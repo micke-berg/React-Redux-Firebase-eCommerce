@@ -3,10 +3,6 @@ import './Registration.scss';
 
 import SignUp from '../../components/SignUp/SignUp';
 
-function Registration() {
-  return (
-    <SignUp />
-  );
-}
+const Registration = () => <SignUp />;
 
 export default Registration;
