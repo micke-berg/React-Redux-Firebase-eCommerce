@@ -8,7 +8,7 @@ import FormInput from '../forms/FormInput/FormInput';
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import Button from '../forms/Button/Button';
 
-function SignUp(props) {
+function SignUp({ props }) {
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +32,7 @@ function SignUp(props) {
     try {
       const { user } = await auth.createUserWithEmailAndPassword(email, password);
       await handleUserProfile(user, { displayName });
+
       resetFormStates();
       props.history.push('/');
     } catch (err) {
@@ -39,6 +40,7 @@ function SignUp(props) {
     }
   };
 
+  console.log(displayName);
   const configAuthWrapper = {
     headline: 'Sign Up',
   };
