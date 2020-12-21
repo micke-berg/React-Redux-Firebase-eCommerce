@@ -12,22 +12,17 @@ const EmailPassword = (props) => {
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const config = {
       url: 'http://localhost:3000/login',
     };
-
     try {
       await auth.sendPasswordResetEmail(email, config)
         .then(() => {
           props.history.push('/login');
         });
+      // setEmail('');
     } catch (err) {
       const error = ['Email not found. Please try again.'];
       setErrors(error);
@@ -42,9 +37,9 @@ const EmailPassword = (props) => {
     <AuthWrapper {...configAuthWrapper}>
       {errors.length > 0 && (
         <ul>
-          {errors.map((e) => (
-            <li key={e}>
-              {e}
+          {errors.map((error) => (
+            <li key={error}>
+              {error}
             </li>
           ))}
         </ul>
@@ -56,7 +51,7 @@ const EmailPassword = (props) => {
             name="email"
             value={email}
             placeholder="Email..."
-            onChange={handleEmailChange}
+            handleChange={(e) => setEmail(e.target.value)}
           />
           <Button type="submit">
             Email Password
