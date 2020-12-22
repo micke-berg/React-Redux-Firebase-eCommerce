@@ -3,15 +3,12 @@ import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import './default.scss';
 // Redux
-import { setCurrentUser } from './redux/User/user.actions';
+import { checkUserSession } from './redux/User/user.actions';
 // hoc
 import WithAuth from './hoc/withAuth';
-// Firebase
-import { auth, handleUserProfile } from './firebase/utils';
 // Layouts
 import MainLayout from './layouts/MainLayout';
 import HomepageLayout from './layouts/HomePageLayout';
-
 // Pages
 import HomePage from './pages/Homepage/HomePage';
 import Registration from './pages/Registration/Registration';
@@ -21,22 +18,9 @@ import Dashboard from './pages/Dashboard/Dashboard';
 
 const App = () => {
   const dispatch = useDispatch();
+
   useEffect(() => {
-    const authListener = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await handleUserProfile(userAuth);
-        userRef.onSnapshot((snapshot) => {
-          dispatch(setCurrentUser({
-            id: snapshot.id,
-            ...snapshot.data(),
-          }));
-        });
-      }
-      dispatch(setCurrentUser(userAuth));
-      return () => {
-        authListener();
-      };
-    });
+    dispatch(checkUserSession());
   }, []);
 
   return (
