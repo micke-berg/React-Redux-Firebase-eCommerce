@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-import { signInUser } from '../../redux/User/user.actions';
+import { signInUser, signInWithGoogle, resetAllAuthForms } from '../../redux/User/user.actions';
 import './SignIn.scss';
 
 import Button from '../forms/Button/Button';
 import FormInput from '../forms/FormInput/FormInput';
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
-
-import { signInWithGoogle } from '../../firebase/utils';
 
 const mapState = ({ user }) => ({
   signInSuccess: user.signInSuccess,
@@ -28,6 +26,7 @@ const SignIn = (props) => {
   useEffect(() => {
     if (signInSuccess) {
       resetForm();
+      dispatch(resetAllAuthForms());
       props.history.push('/');
     }
   }, [signInSuccess]);
@@ -35,6 +34,10 @@ const SignIn = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(signInUser(email, password));
+  };
+
+  const handleGoogleSignIn = () => {
+    dispatch(signInWithGoogle());
   };
 
   const configAuthWrapper = {
@@ -62,7 +65,7 @@ const SignIn = (props) => {
           <Button type="submit">Login</Button>
           <div className="social-signIn">
             <div className="row">
-              <Button onClick={signInWithGoogle}>
+              <Button onClick={handleGoogleSignIn}>
                 Sign in with Google
               </Button>
             </div>
