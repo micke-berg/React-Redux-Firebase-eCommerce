@@ -1,32 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetPassword, resetAllAuthForms } from '../../redux/User/user.actions';
 import './EmailPassword.scss';
-
-import { auth } from '../../firebase/utils';
 
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import FormInput from '../forms/FormInput/FormInput';
 import Button from '../forms/Button/Button';
 
+const mapState = ({ user }) => ({
+  resetPasswordSuccess: user.resetPasswordSuccess,
+  resetPasswordError: user.resetPasswordError,
+});
+
 const EmailPassword = (props) => {
+  const { resetPasswordSuccess, resetPasswordError } = useSelector(mapState);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState([]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const config = {
-      url: 'http://localhost:3000/login',
-    };
-    try {
-      await auth.sendPasswordResetEmail(email, config)
-        .then(() => {
-          props.history.push('/login');
-        });
-      // setEmail('');
-    } catch (err) {
-      const error = ['Email not found. Please try again.'];
-      setErrors(error);
+  useEffect(() => {
+    if (resetPasswordSuccess) {
+      dispatch(resetAllAuthForms());
+      props.history.push('/');
     }
+  }, [resetPasswordSuccess]);
+
+  useEffect(() => {
+    if (Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
+      setErrors(resetPasswordError);
+    }
+  }, [resetPasswordError]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(resetPassword({ email }));
   };
 
   const configAuthWrapper = {
@@ -35,7 +43,8 @@ const EmailPassword = (props) => {
 
   return (
     <AuthWrapper {...configAuthWrapper}>
-      {errors.length > 0 && (
+      <div className="formWrapper">
+        {errors.length > 0 && (
         <ul>
           {errors.map((error) => (
             <li key={error}>
@@ -43,8 +52,8 @@ const EmailPassword = (props) => {
             </li>
           ))}
         </ul>
-      )}
-      <div className="formWrapper">
+        )}
+
         <form onSubmit={handleSubmit}>
           <FormInput
             type="email"
