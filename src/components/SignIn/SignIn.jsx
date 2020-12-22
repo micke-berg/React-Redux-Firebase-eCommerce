@@ -1,33 +1,43 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+import { signInUser, signInWithGoogle, resetAllAuthForms } from '../../redux/User/user.actions';
 import './SignIn.scss';
 
 import Button from '../forms/Button/Button';
 import FormInput from '../forms/FormInput/FormInput';
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
 
-import { signInWithGoogle, auth } from '../../firebase/utils';
+const mapState = ({ user }) => ({
+  signInSuccess: user.signInSuccess,
+});
 
-function SignIn() {
+const SignIn = (props) => {
+  const { signInSuccess } = useSelector(mapState);
+  const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const resetForm = () => {
+    setEmail('');
+    setPassword('');
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await auth.signInWithEmailAndPassword(email, password);
-      setEmail('');
-      setPassword('');
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    if (signInSuccess) {
+      resetForm();
+      dispatch(resetAllAuthForms());
+      props.history.push('/');
     }
+  }, [signInSuccess]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signInUser({ email, password }));
+  };
+
+  const handleGoogleSignIn = () => {
+    dispatch(signInWithGoogle());
   };
 
   const configAuthWrapper = {
@@ -43,19 +53,21 @@ function SignIn() {
             name="email"
             value={email}
             placeholder="Email address..."
-            onChange={handleEmailChange}
+            handleChange={(e) => setEmail(e.target.value)}
           />
           <FormInput
             type="password"
             name="password"
             value={password}
             placeholder="password..."
-            onChange={handlePasswordChange}
+            handleChange={(e) => setPassword(e.target.value)}
           />
           <Button type="submit">Login</Button>
           <div className="social-signIn">
             <div className="row">
-              <Button onClick={signInWithGoogle}>Sign In With Google</Button>
+              <Button onClick={handleGoogleSignIn}>
+                Sign in with Google
+              </Button>
             </div>
           </div>
           <div className="links">
@@ -67,6 +79,6 @@ function SignIn() {
       </div>
     </AuthWrapper>
   );
-}
+};
 
-export default SignIn;
+export default withRouter(SignIn);
