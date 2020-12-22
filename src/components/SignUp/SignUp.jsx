@@ -45,14 +45,15 @@ function SignUp(props) {
     }
   }, [signUpError]);
 
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    dispatch(signUpUser(displayName, email, password, confirmPassword));
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    dispatch(signUpUser({
+      displayName, email, password, confirmPassword,
+    }));
     resetFormStates();
     props.history.push('/');
   };
 
-  console.log(displayName);
   const configAuthWrapper = {
     headline: 'Sign Up',
   };

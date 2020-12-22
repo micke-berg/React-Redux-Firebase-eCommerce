@@ -33,7 +33,7 @@ const SignIn = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(signInUser(email, password));
+    dispatch(signInUser({ email, password }));
   };
 
   const handleGoogleSignIn = () => {
