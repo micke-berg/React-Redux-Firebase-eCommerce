@@ -3,18 +3,22 @@
 import React from 'react';
 import './styles.scss';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import { auth } from '../../firebase/utils';
+import { signOutUserStart } from '../../redux/User/user.actions';
 
 const mapState = ({ user }) => ({
   currentUser: user.currentUser,
 });
 
 function Header() {
+  const dispatch = useDispatch();
   const { currentUser } = useSelector(mapState);
 
+  const signOut = () => {
+    dispatch(signOutUserStart());
+    console.log('signOutUserStart');
+  };
   return (
     <header className="header">
       <div className="wrapper">
@@ -32,7 +36,7 @@ function Header() {
               </Link>
             </li>
             <li>
-              <span onClick={() => auth.signOut()}>
+              <span onClick={signOut}>
                 Log out
               </span>
             </li>

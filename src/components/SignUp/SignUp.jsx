@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUser, resetAllAuthForms } from '../../redux/User/user.actions';
+import { signUpUserStart } from '../../redux/User/user.actions';
 
 import './SignUp.scss';
 
@@ -10,13 +10,14 @@ import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import Button from '../forms/Button/Button';
 
 const mapState = ({ user }) => ({
-  signUpSuccess: user.signUpSuccess,
-  signUpError: user.signUpError,
+  currentUser: user.currentUser,
+  userErr: user.userErr,
 });
 
-function SignUp(props) {
-  const { signUpSuccess, signUpError } = useSelector(mapState);
+function SignUp() {
+  const history = useHistory();
   const dispatch = useDispatch();
+  const { currentUser, userErr } = useSelector(mapState);
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,26 +33,28 @@ function SignUp(props) {
   };
 
   useEffect(() => {
-    if (signUpSuccess) {
+    if (currentUser) {
       resetFormStates();
-      dispatch(resetAllAuthForms());
-      props.history.push('/');
+      history.push('/');
     }
-  }, [signUpSuccess]);
+  }, [currentUser]);
 
   useEffect(() => {
-    if (Array.isArray(signUpError) && signUpError.length > 0) {
-      setErrors(signUpError);
+    if (Array.isArray(userErr) && userErr.length > 0) {
+      setErrors(userErr);
     }
-  }, [signUpError]);
+  }, [userErr]);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
-    dispatch(signUpUser({
-      displayName, email, password, confirmPassword,
+    dispatch(signUpUserStart({
+      displayName,
+      email,
+      password,
+      confirmPassword,
     }));
     resetFormStates();
-    props.history.push('/');
+    history.push('/');
   };
 
   const configAuthWrapper = {
@@ -104,4 +107,4 @@ function SignUp(props) {
   );
 }
 
-export default withRouter(SignUp);
+export default SignUp;
