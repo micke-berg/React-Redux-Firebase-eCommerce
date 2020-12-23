@@ -4,8 +4,11 @@ import { useDispatch } from 'react-redux';
 import './default.scss';
 // Redux
 import { checkUserSession } from './redux/User/user.actions';
+// components
+import AdminToolbar from './components/AdminToolbar/AdminToolbar';
 // hoc
 import WithAuth from './hoc/withAuth';
+import WithAdminAuth from './hoc/withAdminAuth';
 // Layouts
 import MainLayout from './layouts/MainLayout';
 import HomepageLayout from './layouts/HomePageLayout';
@@ -15,6 +18,7 @@ import Registration from './pages/Registration/Registration';
 import LoginPage from './pages/LoginPage/LoginPage';
 import Recovery from './pages/Recovery/Recovery';
 import Dashboard from './pages/Dashboard/Dashboard';
+import Admin from './pages/Admin/Admin';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -25,6 +29,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <AdminToolbar />
       <Switch>
         <Route
           exact
@@ -67,6 +72,16 @@ const App = () => {
                 <Dashboard />
               </MainLayout>
             </WithAuth>
+          )}
+        />
+        <Route
+          path="/admin"
+          render={() => (
+            <WithAdminAuth>
+              <MainLayout>
+                <Admin />
+              </MainLayout>
+            </WithAdminAuth>
           )}
         />
       </Switch>
