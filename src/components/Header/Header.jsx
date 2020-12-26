@@ -24,7 +24,11 @@ function Header() {
       <div className="wrapper">
         <div className="logo">
           <Link to="/">
-            <h2>OZ|ZO</h2>
+            <h2>
+              Zo
+              <span>|</span>
+              Zo
+            </h2>
           </Link>
         </div>
         <div className="callToActions">
