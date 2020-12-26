@@ -1,50 +1,60 @@
-import React, { useState } from 'react';
-import './SignUp.scss';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { signUpUserStart } from '../../redux/User/user.actions';
 
-import { auth, handleUserProfile } from '../../firebase/utils';
+import './SignUp.scss';
 
 import FormInput from '../forms/FormInput/FormInput';
 import AuthWrapper from '../AuthWrapper/AuthWrapper';
 import Button from '../forms/Button/Button';
 
+const mapState = ({ user }) => ({
+  currentUser: user.currentUser,
+  userErr: user.userErr,
+});
+
 function SignUp() {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { currentUser, userErr } = useSelector(mapState);
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState('');
 
-  const handleNameChange = (e) => {
-    setDisplayName(e.target.value);
-  };
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPassword(e.target.value);
+  const resetFormStates = () => {
+    setDisplayName('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    setErrors([]);
   };
 
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      const err = ['Passwords don´t match'];
-      setErrors(err);
-      console.log(err);
+  useEffect(() => {
+    if (currentUser) {
+      resetFormStates();
+      history.push('/');
     }
-    try {
-      const { user } = await auth.createUserWithEmailAndPassword(email, password);
-      await handleUserProfile(user, { displayName });
+  }, [currentUser]);
 
-      setDisplayName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
-    } catch (err) {
-      setErrors(err);
+  useEffect(() => {
+    if (Array.isArray(userErr) && userErr.length > 0) {
+      setErrors(userErr);
     }
+  }, [userErr]);
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+    dispatch(signUpUserStart({
+      displayName,
+      email,
+      password,
+      confirmPassword,
+    }));
+    resetFormStates();
+    history.push('/');
   };
 
   const configAuthWrapper = {
@@ -66,35 +76,34 @@ function SignUp() {
             type="text"
             name="displayName"
             value={displayName}
-            placeholder="Full Name..."
-            onChange={handleNameChange}
+            placeholder="Full name"
+            handleChange={(e) => setDisplayName(e.target.value)}
           />
           <FormInput
             type="email"
             name="email"
             value={email}
-            placeholder="Email..."
-            onChange={handleEmailChange}
+            placeholder="Email"
+            handleChange={(e) => setEmail(e.target.value)}
           />
           <FormInput
             type="password"
             name="password"
             value={password}
-            placeholder="password..."
-            onChange={handlePasswordChange}
+            placeholder="Password"
+            handleChange={(e) => setPassword(e.target.value)}
           />
           <FormInput
             type="password"
             name="confirmPassword"
             value={confirmPassword}
-            placeholder="Confirm Password..."
-            onChange={handleConfirmPasswordChange}
+            placeholder="Confirm Password"
+            handleChange={(e) => setConfirmPassword(e.target.value)}
           />
           <Button type="submit">Register</Button>
         </form>
       </div>
     </AuthWrapper>
-
   );
 }
 

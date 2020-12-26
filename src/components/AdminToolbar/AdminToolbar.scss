@@ -1,0 +1,33 @@
+.admin-toolbar {
+  display: inline-block;
+  width: 100%;
+  background: #000000;
+  height: auto;
+  margin: 0 auto;
+  padding: 0 10px;
+  ul,
+  li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  ul {
+    float: right;
+    li {
+      display: block;
+      a {
+        display: block;
+        font-size: 1.6rem;
+        line-height: 1;
+        color: #ffffff;
+        padding: 10px;
+        transition: 0.4s ease-in-out;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.4);
+          transition: 0.4s ease-in-out;
+        }
+      }
+    }
+  }
+}

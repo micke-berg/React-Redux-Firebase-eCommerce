@@ -14,10 +14,13 @@
       padding: 0 20px;
       height: 100%;
       a {
-        color: red;
+        color: #000;
         font-size: 2rem;
         h2 {
           font-weight: 400;
+          span {
+            font-weight: 300;
+          }
         }
       }
     }
@@ -26,8 +29,12 @@
       margin-left: 40px;
     }
     .callToActions {
-      width: 120px;
-      margin-right: 40px;
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      transform: translateY(-50%);
     }
   }
 

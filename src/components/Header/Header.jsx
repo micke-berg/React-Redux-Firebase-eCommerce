@@ -2,44 +2,56 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import './styles.scss';
-import { Link } from 'react-router-dom';
-import { auth } from '../../firebase/utils';
 
-function Header({ currentUser }) {
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { signOutUserStart } from '../../redux/User/user.actions';
+
+const mapState = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+
+function Header() {
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector(mapState);
+
+  const signOut = () => {
+    dispatch(signOutUserStart());
+    console.log('signOutUserStart');
+  };
   return (
     <header className="header">
       <div className="wrapper">
-        <div className="men-women">
-          <ul>
-            <li>
-              <a href="/">Women</a>
-            </li>
-            <li>
-              <a href="/">Men</a>
-            </li>
-          </ul>
-        </div>
         <div className="logo">
           <Link to="/">
-            <h2>OZ|ZO</h2>
+            <h2>
+              Zo
+              <span>|</span>
+              Zo
+            </h2>
           </Link>
         </div>
         <div className="callToActions">
           {currentUser && (
-            <ul>
-              <li>
-                <span type="button" onClick={() => auth.signOut()}>
-                  Log out
-                </span>
-              </li>
-            </ul>
+          <ul>
+            <li>
+              <Link to="/dashboard">
+                My Account
+              </Link>
+            </li>
+            <li>
+              <span onClick={signOut}>
+                Log out
+              </span>
+            </li>
+          </ul>
           )}
           {!currentUser && (
             <ul>
               <li>
                 <Link to="/registration">Join</Link>
               </li>
-              /
+              <span>/</span>
               <li>
                 <Link to="/login">Sign In</Link>
               </li>
@@ -50,5 +62,9 @@ function Header({ currentUser }) {
     </header>
   );
 }
+
+Header.defaultProps = {
+  currentUser: null,
+};
 
 export default Header;
