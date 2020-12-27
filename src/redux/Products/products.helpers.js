@@ -49,19 +49,32 @@ export const handleFetchProducts = ({
     });
 });
 
-export const handleDeleteProduct = (documentID) => {
-  console.log(documentID, 1);
-  return new Promise((resolve, reject) => {
-    firestore
-      .collection('products')
-      .doc(documentID)
-      .delete()
-      .then(() => {
-        console.log(documentID, 2);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+export const handleDeleteProduct = (documentID) => new Promise((resolve, reject) => {
+  firestore
+    .collection('products')
+    .doc(documentID)
+    .delete()
+    .then(() => {
+      resolve();
+    })
+    .catch((err) => {
+      reject(err);
+    });
+});
+
+export const handleFetchProduct = (productID) => new Promise((resolve, reject) => {
+  firestore
+    .collection('products')
+    .doc(productID)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists) {
+        resolve(
+          snapshot.data(),
+        );
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    });
+});
