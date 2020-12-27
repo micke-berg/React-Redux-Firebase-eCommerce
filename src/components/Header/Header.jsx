@@ -31,6 +31,20 @@ function Header() {
             </h2>
           </Link>
         </div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/search">
+                Search
+              </Link>
+            </li>
+            <li>
+              <Link to="/">
+                Home
+              </Link>
+            </li>
+          </ul>
+        </nav>
         <div className="callToActions">
           {currentUser && (
           <ul>
