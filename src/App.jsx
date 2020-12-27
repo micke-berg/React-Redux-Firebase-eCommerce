@@ -21,6 +21,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import Recovery from './pages/Recovery/Recovery';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Admin from './pages/Admin/Admin';
+import Search from './pages/Search/Search';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,14 @@ const App = () => {
             <HomepageLayout>
               <HomePage />
             </HomepageLayout>
+          )}
+        />
+        <Route
+          path="/search"
+          render={() => (
+            <MainLayout>
+              <Search />
+            </MainLayout>
           )}
         />
         <Route
