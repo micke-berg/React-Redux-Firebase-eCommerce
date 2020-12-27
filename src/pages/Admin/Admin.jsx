@@ -5,6 +5,7 @@ import Modal from '../../components/Modal/Modal';
 import FormInput from '../../components/forms/FormInput/FormInput';
 import FormSelect from '../../components/forms/FormSelect/FormSelect';
 import Button from '../../components/forms/Button/Button';
+import LoadMore from '../../components/LoadMore/Loadmore';
 import './Admin.scss';
 
 const mapState = ({ productsData }) => ({
@@ -19,6 +20,8 @@ const Admin = () => {
   const [productName, setProductName] = useState('');
   const [productThumbnail, setProductThumbnail] = useState('');
   const [productPrice, setProductPrice] = useState(0);
+
+  const { data, queryDoc, isLastPage } = products;
 
   useEffect(() => {
     dispatch(
@@ -53,6 +56,19 @@ const Admin = () => {
       }),
     );
     resetForm();
+  };
+
+  const handleLoadMore = () => {
+    dispatch(
+      fetchProductsStart({
+        startAfterDoc: queryDoc,
+        persistProducts: data,
+      }),
+    );
+  };
+
+  const configLoadMore = {
+    onLoadMoreEvt: handleLoadMore,
   };
 
   return (
@@ -127,7 +143,7 @@ const Admin = () => {
               <td>
                 <table className="results" border="0" cellPadding="10" cellSpacing="0">
                   <tbody>
-                    {products.map((product) => {
+                    {(Array.isArray(data) && data.length > 1) && data.map((product) => {
                       const {
                         // productName,
                         // productThumbnail,
@@ -155,6 +171,24 @@ const Admin = () => {
                         </tr>
                       );
                     })}
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td />
+            </tr>
+            <tr>
+              <td>
+                <table border="0" cellSpacing="10" cellPadding="0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        {!isLastPage && (
+                          <LoadMore {...configLoadMore} />
+                        )}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </td>
