@@ -66,7 +66,7 @@ const SignIn = () => {
           <div className="social-signIn">
             <div className="row">
               <Button onClick={handleGoogleSignIn}>
-                Sign in with Google
+                Continue with Google
               </Button>
             </div>
           </div>

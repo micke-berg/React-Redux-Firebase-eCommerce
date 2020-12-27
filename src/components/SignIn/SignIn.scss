@@ -1,5 +1,18 @@
 .social-signIn {
   margin-top: 1rem;
+  position: relative;
+  :before {
+    background-image: url('https://sign-in-spa.guccidigital.io/static/media/google-icon.42397050.svg');
+    background-size: contain;
+    bottom: 12px;
+    content: '';
+    height: 26px;
+    left: 12px;
+    position: absolute;
+    right: 27px;
+    top: 8px;
+    width: 26px;
+  }
 }
 
 .links {
