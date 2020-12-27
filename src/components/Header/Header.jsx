@@ -27,7 +27,7 @@ function Header() {
             <h2>
               Zo
               <span>|</span>
-              Zo
+              oZ
             </h2>
           </Link>
         </div>
