@@ -76,18 +76,17 @@ const ProductResults = () => {
       <h1>Browse Products</h1>
       <FormSelect {...configFilters} />
       <div className="productResults">
+
         {data.map((product) => {
           const { productThumbnail, productName, productPrice } = product;
-          if (!product.productThumbnail || !product.productName
-          || typeof product.productPrice === 'undefined') return null;
+          if (!productThumbnail || !productName
+          || typeof productPrice === 'undefined') return null;
 
           const configProduct = {
-            productThumbnail,
-            productName,
-            productPrice,
+            ...product,
           };
           return (
-            <Product key={product.productName} {...configProduct} />
+            <Product key={productName} {...configProduct} />
           );
         })}
       </div>
