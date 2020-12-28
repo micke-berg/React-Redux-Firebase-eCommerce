@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductStart, setProduct } from '../../redux/Products/products.actions';
+import addProduct from '../../redux/Cart/cart.actions';
 import Button from '../forms/Button/Button';
 import './ProductCard.scss';
 
@@ -34,6 +35,13 @@ const ProductCard = () => {
     };
   }, []);
 
+  const handleAddToCart = (prod) => {
+    if (!prod) return;
+    dispatch(
+      addProduct(prod),
+    );
+  };
+
   const configAddToCartButton = {
     type: 'button',
 
@@ -58,7 +66,10 @@ const ProductCard = () => {
           <li />
           <li>
             <div className="addToCart">
-              <Button {...configAddToCartButton}>
+              <Button
+                {...configAddToCartButton}
+                onClick={() => handleAddToCart(product)}
+              >
                 Add to Cart
               </Button>
             </div>
