@@ -24,13 +24,10 @@
         }
       }
     }
-    .men-women {
-      width: 120px;
-      margin-left: 40px;
-    }
     nav {
       display: flex;
       justify-content: center;
+      align-items: center;
       margin: 0;
       padding: 0;
       ul,
@@ -39,6 +36,8 @@
         padding: 0;
       }
       ul {
+        display: flex;
+        align-items: center;
         li {
           list-style: none;
           display: inline-block;

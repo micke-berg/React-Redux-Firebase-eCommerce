@@ -24,23 +24,21 @@ function Header() {
   return (
     <header className="header">
       <div className="wrapper">
-        <div className="logo">
-          <Link to="/">
-            <h2>
-              ZoZoo.
-            </h2>
-          </Link>
-        </div>
+
         <nav>
           <ul>
             <li>
+              <div className="logo">
+                <Link to="/">
+                  <h2>
+                    ZoZoo.
+                  </h2>
+                </Link>
+              </div>
+            </li>
+            <li className="search">
               <Link to="/search">
                 Search
-              </Link>
-            </li>
-            <li>
-              <Link to="/">
-                Home
               </Link>
             </li>
           </ul>
@@ -48,7 +46,7 @@ function Header() {
         <div className="callToActions">
           <ul>
             <li>
-              <Link to="/">
+              <Link to="/cart">
                 Cart
                 {' '}
                 (
