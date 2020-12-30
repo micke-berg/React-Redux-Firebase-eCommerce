@@ -13,35 +13,68 @@ export const handleAddProduct = (product) => new Promise((resolve, reject) => {
     });
 });
 
-export const handleFetchProducts = () => new Promise((resolve, reject) => {
-  firestore
-    .collection('products')
+export const handleFetchProducts = ({
+  filterType,
+  startAfterDoc,
+  persistProducts = [],
+}) => new Promise((resolve, reject) => {
+  const pageSize = 6;
+
+  let ref = firestore.collection('products').orderBy('createdDate').limit(pageSize);
+
+  if (filterType) ref = ref.where('productCategory', '==', filterType);
+  if (startAfterDoc) ref = ref.startAfter(startAfterDoc);
+
+  ref
     .get()
     .then((snapshot) => {
-      const productsArray = snapshot.docs.map((doc) => ({
-        ...doc.data(),
-        documentID: doc.id,
-      }));
-      resolve(productsArray);
+      const totalCount = snapshot.size;
+      const data = [
+        ...persistProducts,
+        ...snapshot.docs.map((doc) => ({
+          ...doc.data(),
+          documentID: doc.id,
+        }
+        )),
+      ];
+
+      resolve({
+        data,
+        queryDoc: snapshot.docs[totalCount - 1],
+        isLastPage: totalCount < 1,
+      });
     })
     .catch((err) => {
       reject(err);
     });
 });
 
-export const handleDeleteProduct = (documentID) => {
-  console.log(documentID, 1);
-  return new Promise((resolve, reject) => {
-    firestore
-      .collection('products')
-      .doc(documentID)
-      .delete()
-      .then(() => {
-        console.log(documentID, 2);
-        resolve();
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-};
+export const handleDeleteProduct = (documentID) => new Promise((resolve, reject) => {
+  firestore
+    .collection('products')
+    .doc(documentID)
+    .delete()
+    .then(() => {
+      resolve();
+    })
+    .catch((err) => {
+      reject(err);
+    });
+});
+
+export const handleFetchProduct = (productID) => new Promise((resolve, reject) => {
+  firestore
+    .collection('products')
+    .doc(productID)
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists) {
+        resolve(
+          snapshot.data(),
+        );
+      }
+    })
+    .catch((err) => {
+      reject(err);
+    });
+});

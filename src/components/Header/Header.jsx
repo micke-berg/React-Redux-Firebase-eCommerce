@@ -6,14 +6,16 @@ import './styles.scss';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { signOutUserStart } from '../../redux/User/user.actions';
+import { selectCartItemsCount } from '../../redux/Cart/cart.selectors';
 
-const mapState = ({ user }) => ({
-  currentUser: user.currentUser,
+const mapState = (state) => ({
+  currentUser: state.user.currentUser,
+  totalNumCartItems: selectCartItemsCount(state),
 });
 
 function Header() {
   const dispatch = useDispatch();
-  const { currentUser } = useSelector(mapState);
+  const { currentUser, totalNumCartItems } = useSelector(mapState);
 
   const signOut = () => {
     dispatch(signOutUserStart());
@@ -22,41 +24,62 @@ function Header() {
   return (
     <header className="header">
       <div className="wrapper">
-        <div className="logo">
-          <Link to="/">
-            <h2>
-              Zo
-              <span>|</span>
-              Zo
-            </h2>
-          </Link>
-        </div>
-        <div className="callToActions">
-          {currentUser && (
+
+        <nav>
           <ul>
             <li>
-              <Link to="/dashboard">
-                My Account
+              <div className="logo">
+                <Link to="/">
+                  <h2>
+                    ZoZoo.
+                  </h2>
+                </Link>
+              </div>
+            </li>
+            <li className="search">
+              <Link to="/search">
+                Search
               </Link>
             </li>
+          </ul>
+        </nav>
+        <div className="callToActions">
+          <ul>
             <li>
-              <span onClick={signOut}>
-                Log out
-              </span>
+              <Link to="/cart">
+                Cart
+                {' '}
+                (
+                {totalNumCartItems}
+                )
+              </Link>
             </li>
           </ul>
-          )}
-          {!currentUser && (
-            <ul>
+          <ul>
+            {currentUser && [
+              <li>
+                <Link to="/dashboard">
+                  My Account
+                </Link>
+              </li>,
+              <li>
+                <span onClick={signOut}>
+                  Log out
+                </span>
+              </li>,
+            ]}
+          </ul>
+          <ul>
+
+            {!currentUser && [
               <li>
                 <Link to="/registration">Join</Link>
-              </li>
-              <span>/</span>
+              </li>,
               <li>
                 <Link to="/login">Sign In</Link>
-              </li>
-            </ul>
-          )}
+              </li>,
+            ]}
+          </ul>
         </div>
       </div>
     </header>

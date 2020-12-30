@@ -21,6 +21,9 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import Recovery from './pages/Recovery/Recovery';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Admin from './pages/Admin/Admin';
+import Search from './pages/Search/Search';
+import ProductDetails from './pages/ProductDetails/ProductDetails';
+import Cart from './pages/Cart/Cart';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,6 +43,39 @@ const App = () => {
             <HomepageLayout>
               <HomePage />
             </HomepageLayout>
+          )}
+        />
+        <Route
+          exact
+          path="/search"
+          render={() => (
+            <MainLayout>
+              <Search />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/search/:filterType"
+          render={() => (
+            <MainLayout>
+              <Search />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/product/:productID"
+          render={() => (
+            <MainLayout>
+              <ProductDetails />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/cart"
+          render={() => (
+            <MainLayout>
+              <Cart />
+            </MainLayout>
           )}
         />
         <Route

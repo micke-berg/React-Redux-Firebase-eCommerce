@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import CKEditor from 'ckeditor4-react';
 import { addProductStart, fetchProductsStart, deleteProductStart } from '../../redux/Products/products.actions';
 import Modal from '../../components/Modal/Modal';
 import FormInput from '../../components/forms/FormInput/FormInput';
 import FormSelect from '../../components/forms/FormSelect/FormSelect';
 import Button from '../../components/forms/Button/Button';
+import LoadMore from '../../components/LoadMore/Loadmore';
 import './Admin.scss';
 
 const mapState = ({ productsData }) => ({
@@ -19,6 +21,9 @@ const Admin = () => {
   const [productName, setProductName] = useState('');
   const [productThumbnail, setProductThumbnail] = useState('');
   const [productPrice, setProductPrice] = useState(0);
+  const [productDescription, setProductDescription] = useState('');
+
+  const { data, queryDoc, isLastPage } = products;
 
   useEffect(() => {
     dispatch(
@@ -39,6 +44,7 @@ const Admin = () => {
     setProductName('');
     setProductThumbnail('');
     setProductPrice(0);
+    setProductDescription('');
   };
 
   const handleSubmit = (e) => {
@@ -50,9 +56,23 @@ const Admin = () => {
         productName,
         productThumbnail,
         productPrice,
+        productDescription,
       }),
     );
     resetForm();
+  };
+
+  const handleLoadMore = () => {
+    dispatch(
+      fetchProductsStart({
+        startAfterDoc: queryDoc,
+        persistProducts: data,
+      }),
+    );
+  };
+
+  const configLoadMore = {
+    onLoadMoreEvt: handleLoadMore,
   };
 
   return (
@@ -105,6 +125,9 @@ const Admin = () => {
               value={productPrice}
               handleChange={(e) => setProductPrice(e.target.value)}
             />
+            <CKEditor
+              onChange={(e) => setProductDescription(e.editor.getData())}
+            />
             <br />
             <Button type="submit">
               Add product
@@ -127,7 +150,7 @@ const Admin = () => {
               <td>
                 <table className="results" border="0" cellPadding="10" cellSpacing="0">
                   <tbody>
-                    {products.map((product) => {
+                    {(Array.isArray(data) && data.length > 1) && data.map((product) => {
                       const {
                         // productName,
                         // productThumbnail,
@@ -155,6 +178,24 @@ const Admin = () => {
                         </tr>
                       );
                     })}
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td />
+            </tr>
+            <tr>
+              <td>
+                <table border="0" cellSpacing="10" cellPadding="0">
+                  <tbody>
+                    <tr>
+                      <td>
+                        {!isLastPage && (
+                          <LoadMore {...configLoadMore} />
+                        )}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </td>
