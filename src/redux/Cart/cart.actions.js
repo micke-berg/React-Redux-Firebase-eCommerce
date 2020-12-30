@@ -1,8 +1,16 @@
 import cartTypes from './cart.types';
 
-const addProduct = (nextCartItem) => ({
+export const addProduct = (nextCartItem) => ({
   type: cartTypes.ADD_TO_CART,
   payload: nextCartItem,
 });
 
-export default addProduct;
+export const removeCartItem = (cartItem) => ({
+  type: cartTypes.REMOVE_CART_ITEM,
+  payload: cartItem,
+});
+
+export const reduceCartItem = (cartItem) => ({
+  type: cartTypes.REDUCE_CART_ITEM,
+  payload: cartItem,
+});
